@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  rag_service:
+    image: rag_service
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+  postgres:
+  # We can replace the image with the following to use the pgvector/pgvector:pg16 image
+  # pgvector/pgvector:pg16 
+    build: 
+      context: "custom_db"
+      dockerfile: "Dockerfile"
+    # image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rag_aas_db
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata_rag:/var/lib/postgresql/data
+
+volumes:
+  pgdata_rag:
